@@ -16,6 +16,8 @@ class RouteCustomMenuDelegate extends Ui.BehaviorDelegate
     function onMenu()
     {
     	Ui.popView(Ui.SLIDE_IMMEDIATE);
+
+        return true;
     }
     
     function onNextPage()

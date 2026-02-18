@@ -13,6 +13,7 @@ class LapViewDelegate extends Ui.BehaviorDelegate
     function onMenu()
     {
     	Ui.popView(Ui.SLIDE_RIGHT);
+        return true;
     }
     
     function onNextPage()

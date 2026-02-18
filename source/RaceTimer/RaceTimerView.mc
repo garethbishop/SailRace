@@ -74,9 +74,14 @@ class RaceTimerView extends Ui.View
         		SignalWrapper.HalfMinute();
         	}
         	
-        	if (_timerValue < 11)
+            if (_timerValue < 11)
+            {
+                SignalWrapper.TenSeconds(_timerValue.toLong());
+            }
+
+        	if ((_timerValue < 246 && _timerValue > 239) || (_timerValue < 66 && _timerValue > 59) || (_timerValue == 50) || (_timerValue == 40) || (_timerValue == 20) || ( _timerValue < 16))
         	{
-        		SignalWrapper.TenSeconds(_timerValue.toLong());
+        		SignalWrapper.CountdownAlert(_timerValue.toLong());
         	}
         }
         
@@ -101,7 +106,7 @@ class RaceTimerView extends Ui.View
         var gpsInfo = _gpsWrapper.GetGpsInfo();
         _raceTimerViewDc.PrintSpeed(dc, gpsInfo.SpeedKnot);
         
-        //RaceTimerViewDc.PrintTips(dc);
+        _raceTimerViewDc.PrintTips(dc);
     }
     
     function StartStopCountdown()

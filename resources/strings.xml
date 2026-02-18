@@ -10,6 +10,7 @@
     
     <string id="mmenuRacetimer">Race Timer</string>
     <string id="mmenuCruise">Cruise</string>
+    <string id="mmenuSail">Sail</string>
     <string id="mmenuRoute">Route</string>
     <string id="mmenuLapsView">Laps View</string>
     <string id="mmenuSetting">Settings</string>

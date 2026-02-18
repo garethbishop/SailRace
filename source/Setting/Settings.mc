@@ -10,13 +10,13 @@ class Settings
 		Cruise,
 		Route
 	}
-	static var ForegroundColor = Gfx.COLOR_WHITE;
-	static var BackgroundColor = Gfx.COLOR_BLACK;
+	static var ForegroundColor = Gfx.COLOR_BLACK;
+	static var BackgroundColor = Gfx.COLOR_WHITE;
 	static var DimColor = Gfx.COLOR_LT_GRAY;
 	static var TimerValue = 300;
 	static var IsTimerValueUpdated = false;
 	static var IsAutoRecording = false;
-	static var IsWhiteBackground = false; 
+	static var IsWhiteBackground = true; 
 	
 	static var RouteApiUrl = "";
 	static var UserId = "";
@@ -48,7 +48,7 @@ class Settings
 
 	static function SetBackground(isWhiteBackground)
 	{
-		IsWhiteBackground = (isWhiteBackground == null) ? false : isWhiteBackground;
+		IsWhiteBackground = (isWhiteBackground == null) ? true : isWhiteBackground;
         ForegroundColor = isWhiteBackground ? Gfx.COLOR_BLACK : Gfx.COLOR_WHITE;
         BackgroundColor = isWhiteBackground ? Gfx.COLOR_WHITE : Gfx.COLOR_BLACK;
         DimColor = isWhiteBackground ? Gfx.COLOR_DK_GRAY : Gfx.COLOR_LT_GRAY;
@@ -68,6 +68,6 @@ class Settings
 
 	static function SetAutoRecording(isAutoRecording)
 	{
-		IsAutoRecording = (isAutoRecording == null) ? false : isAutoRecording;
+		IsAutoRecording = (isAutoRecording == null) ? true : isAutoRecording;
 	}
 }

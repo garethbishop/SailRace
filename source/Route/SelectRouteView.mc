@@ -113,7 +113,7 @@ class SelectRouteView extends Ui.View
           :responseType => Comm.HTTP_RESPONSE_CONTENT_TYPE_JSON
         };
 
-       Comm.makeWebRequest(url, {}, options, method(:onReceive));
+    //    Comm.makeWebRequest(url, {}, options, method(:onReceive));
  	}
 	
 	// Receive routes from server

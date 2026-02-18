@@ -1,6 +1,8 @@
 using Toybox.System as Sys;
 using Toybox.Math as Math;
 using Toybox.Test as Test;
+using GpsWrapper;
+
 
 // calculate current in route position
 //

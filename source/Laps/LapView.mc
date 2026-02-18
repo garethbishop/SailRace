@@ -80,7 +80,12 @@ class ConfirmDeleteDelegate extends Ui.ConfirmationDelegate
     {
         if( value == CONFIRM_YES )
         {	
-    		_gpsWrapper.SetLapArray(new[0]);      	
+    		_gpsWrapper.SetLapArray(new[0]);
+            return true;
+        }
+        else
+        {
+            return false;
         }
     }
 }

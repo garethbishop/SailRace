@@ -43,5 +43,6 @@ class CruiseViewDelegate extends Ui.BehaviorDelegate
     function onNextPage()
     {
     	_cruiseView.SwitchNextMode();
+        return true;
     }
 }

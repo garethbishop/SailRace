@@ -33,7 +33,7 @@ class CruiseView extends Ui.View
     
     // Refresh view every second
     //
-    function onTimerUpdate()
+    function onTimerUpdate() as Void
     {
         Ui.requestUpdate();
     }    

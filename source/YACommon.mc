@@ -33,22 +33,22 @@ class YACommon
     	return Lang.format("$1$ $2$", [date.substring(0, 10), date.substring(11, 16)]);
     }
     
-    function ReadKeyInt(myApp, key, defaultValue) 
-    {
-    	var value = myApp.getProperty(key);
-    	if(value == null || !(value instanceof Number)) 
-    	{
-        	if(value != null) 
-        	{
-            	value = value.toNumber();
-        	} 
-        	else 
-        	{
-            	value = defaultValue;
-        	}
-    	}
-    	return value;
-	}	
+    // function ReadKeyInt(myApp, key, defaultValue) 
+    // {
+    // 	var value = myApp.getProperty(key);
+    // 	if(value == null || !(value instanceof Number)) 
+    // 	{
+    //     	if(value != null) 
+    //     	{
+    //         	value = value.toNumber();
+    //     	} 
+    //     	else 
+    //     	{
+    //         	value = defaultValue;
+    //     	}
+    // 	}
+    // 	return value;
+	// }	
     
     (:debug)
     static function DebugPrint(text)
