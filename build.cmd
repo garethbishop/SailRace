@@ -1,5 +1,5 @@
 SET CPath=%CIQ_SDK_Path%
-SET AppName=YASailingApp
+SET AppName=SailRaceApp
 SET Key=c:\#Sync\Projects\Garmin-Keys\YASailingApp.key
 
 SET Device=%1

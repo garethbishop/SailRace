@@ -4,7 +4,7 @@ using Toybox.Position as Position;
 using Toybox.Time as Time;
 using Toybox.System as System;
 
-class YASailingApp extends App.AppBase 
+class SailRaceApp extends App.AppBase 
 {
     hidden var _gpsWrapper;
 	hidden var _cruiseView;
