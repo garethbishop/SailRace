@@ -1,0 +1,6 @@
+<menu id="SettingMenu" title="Settings">
+		<menu-item id="setTimer" label="Set Timer"/>
+    	<menu-item id="backgroundColor" label="Background Color"/>
+    	<menu-item id="isAutoStartRecording" label="Auto Recording"/>
+		<menu-item id="afterTimer" label="RaceTimer Launcher"/>
+</menu>

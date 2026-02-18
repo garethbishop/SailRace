@@ -1,0 +1,13 @@
+<menu id="SetTimerMenu" title="Select Time">
+		<menu-item id="id1" label="1 min"/>
+		<menu-item id="id2" label="2 min"/>
+    	<menu-item id="id3" label="3 min"/>
+    	<menu-item id="id4" label="4 min"/>
+    	<menu-item id="id5" label="5 min"/>
+    	<menu-item id="id10" label="10 min"/>
+		<menu-item id="id20" label="20 min"/>
+		<menu-item id="id30" label="30 min"/>
+		<menu-item id="id40" label="40 min"/>
+		<menu-item id="id50" label="50 min"/>
+		<menu-item id="id60" label="60 min"/>
+</menu>

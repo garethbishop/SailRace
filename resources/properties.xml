@@ -1,0 +1,9 @@
+<properties>
+    <property id="appVersion" type="string">0</property>
+    <property id="isWhiteBackground" type="boolean">false</property>
+    <property id="timerValue" type="number">300</property>
+    <property id="IsAutoRecording" type="boolean">false</property>
+    <property id="userId" type = "string"></property>
+    <property id="wpEpsilon" type="number">100</property>
+    <property id="loadLimit" type="number">10</property> 
+</properties>
