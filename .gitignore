@@ -1,3 +1,5 @@
 .project
-bin/*
+bin
 /.settings
+bin/SailRace.prg
+bin/SailRace.prg.debug.xml
