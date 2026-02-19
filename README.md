@@ -1,4 +1,4 @@
-# Yet-Another-Sailing-App
+# Sail Race App
 
 ### install
 
@@ -6,26 +6,18 @@ https://apps.garmin.com/en-US/apps/159028ac-590b-4836-a1e2-474d248469c5
 
 ### feedback 
 
-https://github.com/Laverlin/Yet-Another-Sailing-App/issues
-
 ### description
 
-There are a few nice sailing apps already, but this is yet another one... =)   
+Based on the source code for Yet Another Sailing App - thanks guys!
 
 This app has 
-- Race Timer with ISAF starting sequence support 
-- Cruise view with speed, bearing and other valuable data
-- Route View, advanced Waypoint mode to track your way along specified route 
-- Laps view 
+- Race Timer with 5 second 4 minute and 1 minute countdowns. 15 second countdown to start. 
+- Sail view with speed, bearing and other valuable data
 
-In **Route** mode you may track you way along specified route. There will be displayed SOG, COG, VMG, Course to closest waypoint, amount of way points along the route (and the current WP), distance to WP, distance to finish, distance covered and Cross-track error.
-The Navionics (navionics.com) is used to setup the route.
-**Note** This mode is not available on D2/Bravo/Titanium and Fx3/HR watches due to low available memory on these devices.       
-
-In **Cruise** mode you may see at one glance, actual speed, bearing, max speed and avg speed for last 10 seconds. Also, there are set of helpful indicators, like GPS status, recording status and actual speed vs avg speed, which is very useful for sail trimming.
+In **Sail** mode you may see at one glance, actual speed, bearing, max speed and avg speed for last 10 seconds. Also, there are set of helpful indicators, like GPS status, recording status and actual speed vs avg speed, which is very useful for sail trimming.
 Moving average of bearing for last 10 sec. could be helpful in long-distance cruise.   
 
-In **Race Timer** mode you may see remaining seconds till start, actual time and speed. You can also adjust countdown timer by one sec up and down, and down to next minute.
+In **Race Timer** mode you may see remaining seconds till start, actual time and speed. You can also adjust countdown timer by one sec up and down, and sync to next minute.
 
 In **Laps view** you may see data - max speed, average speed, distance and time for last 20 laps  
 
