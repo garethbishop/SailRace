@@ -9,6 +9,8 @@ class CruiseView extends Ui.View
 	hidden var _displayMode = 0;
 	hidden var _cruiseViewDc;
 
+    hidden var _shiftAlertCountdown = 20;
+
     function initialize(gpsWrapper, cruiseViewDc) 
     {
         View.initialize();
@@ -54,23 +56,55 @@ class CruiseView extends Ui.View
         var gpsInfo = _gpsWrapper.GetGpsInfo();
         if (gpsInfo.Accuracy > 0)
         {
-        	_cruiseViewDc.PrintSpeed(dc, gpsInfo.SpeedKnot);
-        	_cruiseViewDc.PrintBearing(dc, gpsInfo.BearingDegree);
-        	_cruiseViewDc.PrintMaxSpeed(dc, gpsInfo.MaxSpeedKnot);	
-        	_cruiseViewDc.PrintTotalDistance(dc, gpsInfo.TotalDistance);
+        	// _cruiseViewDc.PrintSpeed(dc, gpsInfo.SpeedKnot);
+        	// _cruiseViewDc.PrintBearing(dc, gpsInfo.BearingDegree);
+
+            var bearingDifference = gpsInfo.CurrentBearingDegree - gpsInfo.AvgBearingDegree;
+            if (bearingDifference > 200) {
+                bearingDifference -= 360;
+            } else if (bearingDifference < -200) {
+                bearingDifference += 360;
+            }
+
+            _cruiseViewDc.PrintCurrentBearing(dc, gpsInfo.CurrentBearingDegree);
+            _cruiseViewDc.PrintAverageBearing(dc, gpsInfo.AvgBearingDegree);
+            _cruiseViewDc.PrintBearingDifference(dc, bearingDifference);
+
+            Settings.LoadSettings();
+
+            if (Settings.ShiftAlerts) {
+                if (bearingDifference > 30 || bearingDifference < -30) {
+                    _shiftAlertCountdown = 20 ;
+                } else if (_shiftAlertCountdown == 0) {
+                    if (bearingDifference >= 10 && bearingDifference < 30) {
+                        // SignalWrapper.SingleBeep();
+                        SignalWrapper.CanaryTone();
+                        _shiftAlertCountdown = 10;
+                    } else if (bearingDifference <= -10 && bearingDifference > -30) {
+                        // SignalWrapper.DoubleBeep();
+                        SignalWrapper.DoubleCanaryTone();
+                        _shiftAlertCountdown = 10;
+                    } 
+                } else {
+                    _shiftAlertCountdown--;
+                } 
+            }
+
+        	// _cruiseViewDc.PrintMaxSpeed(dc, gpsInfo.MaxSpeedKnot);	
+        	// _cruiseViewDc.PrintTotalDistance(dc, gpsInfo.TotalDistance);
         	
-        	if (_displayMode == 0)
-        	{
-        		_cruiseViewDc.PrintAvgBearing(dc, gpsInfo.AvgBearingDegree);
-        	} 
-        	else if (_displayMode == 1)
-        	{
-        		_cruiseViewDc.PrintAvgSpeed(dc, gpsInfo.AvgSpeedKnot);
-        	} 
+        	// if (_displayMode == 0)
+        	// {
+        	// 	_cruiseViewDc.PrintAvgBearing(dc, gpsInfo.AvgBearingDegree);
+        	// } 
+        	// else if (_displayMode == 1)
+        	// {
+        	// 	_cruiseViewDc.PrintAvgSpeed(dc, gpsInfo.AvgSpeedKnot);
+        	// } 
 
         	// Display speed gradient. If current speed > avg speed then trend is positive and vice versa.
         	//
-        	_cruiseViewDc.DisplaySpeedTrend(dc, gpsInfo.SpeedKnot - gpsInfo.AvgSpeedKnot, gpsInfo.SpeedKnot); 
+        	// _cruiseViewDc.DisplaySpeedTrend(dc, gpsInfo.SpeedKnot - gpsInfo.AvgSpeedKnot, gpsInfo.SpeedKnot); 
         }
         
         _cruiseViewDc.DisplayState(dc, gpsInfo.Accuracy, gpsInfo.IsRecording, gpsInfo.LapCount);

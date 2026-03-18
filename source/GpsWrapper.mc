@@ -23,14 +23,37 @@ class GpsWrapper
 	hidden var _maxSpeedSum = 0;
 	hidden var _maxSpeedValues = [0, 0, 0];
 
-    // avg for 10 sec. values (bearing)
+
+    // avg for e.g. 5 sec. values (bearing)
     //
-    hidden var _avgSinValues = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-    hidden var _avgCosValues = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-    hidden var _sinBearingSum = 0;
-    hidden var _cosBearingSum = 0;
-    hidden var _avgBearingDegree = 0;
-    hidden var _avgBearingIterator = 0;
+    // hidden var _currentSinValues = [0, 0, 0, 0, 0];
+    // hidden var _currentCosValues = [0, 0, 0, 0, 0];
+
+    hidden var _currentSinValues = [];
+    hidden var _currentCosValues = [];
+
+    hidden var _alpha;
+
+    hidden var _currentSmoothedSinValues = [];
+    hidden var _currentSmoothedCosValues = [];
+
+    hidden var _sinCurrentBearingSum = 0;
+    hidden var _cosCurrentBearingSum = 0;
+    hidden var _currentBearingDegree = 0;
+    hidden var _currentBearingIterator = 0;
+
+    // avg for e.g. 30 sec. values (bearing)
+    //
+    // hidden var _averageSinValues = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    // hidden var _averageCosValues = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+
+    hidden var _averageSinValues = [];
+    hidden var _averageCosValues = [];
+
+    hidden var _sinAverageBearingSum = 0;
+    hidden var _cosAverageBearingSum = 0;
+    hidden var _averageBearingDegree = 0;
+    hidden var _averageBearingIterator = 0;
 
     // actual gps values
     //
@@ -55,7 +78,10 @@ class GpsWrapper
     const LAP_ARRAY_MAX = 20;
     const MAX_SPEED_INTERVAL = 3;
     const AVG_SPEED_INTERVAL = 10;
+
+    const CURRENT_BEARING_INTERVAL = 10;
     const AVG_BEARING_INTERVAL = 10;
+
     const METERS_PER_NAUTICAL_MILE = 1852;
     const MS_TO_KNOT = 1.9438444924574;
 
@@ -67,6 +93,16 @@ class GpsWrapper
             _activeSession = Fit.createSession({:name => "Sailing", :sport => Fit.SPORT_SAILING});    
         } else {
             _activeSession = Fit.createSession({:name => "Sailing", :sport => Fit.SPORT_GENERIC});
+        }
+
+        for(var i = 0; i < CURRENT_BEARING_INTERVAL; i += 1) {
+            _currentSinValues.add(0);
+            _currentCosValues.add(0);
+        }
+
+        for(var i = 0; i < AVG_BEARING_INTERVAL; i += 1) {
+            _averageSinValues.add(0);
+            _averageCosValues.add(0);
         }
         
     }
@@ -110,16 +146,32 @@ class GpsWrapper
         _avgSpeedValues[_avgSpeedIterator] = _speedKnot;
         _avgSpeedIterator = (_avgSpeedIterator + 1) % AVG_SPEED_INTERVAL;
 
-        // moving avg bearing
+        // moving avg bearing for current bearing
         //
         var sinBearing = Math.sin(positionInfo.heading);
         var cosBearing = Math.cos(positionInfo.heading);
-        _sinBearingSum = _sinBearingSum - _avgSinValues[_avgBearingIterator] + sinBearing;
-        _avgSinValues[_avgBearingIterator] = sinBearing;
-        _cosBearingSum = _cosBearingSum - _avgCosValues[_avgBearingIterator] + cosBearing;
-        _avgCosValues[_avgBearingIterator] = cosBearing;
-        _avgBearingDegree = (Math.toDegrees(Math.atan2(_sinBearingSum, _cosBearingSum)) + 360).toNumber() % 360;
-        _avgBearingIterator = (_avgBearingIterator + 1) % AVG_BEARING_INTERVAL;
+
+        var  sinOldestCurrentBearing = _currentSinValues[_currentBearingIterator];
+        var cosOldestCurrentBearing = _currentCosValues[_currentBearingIterator];
+
+
+        _sinCurrentBearingSum = _sinCurrentBearingSum - sinOldestCurrentBearing + sinBearing;
+        _currentSinValues[_currentBearingIterator] = sinBearing;
+        _cosCurrentBearingSum = _cosCurrentBearingSum - cosOldestCurrentBearing + cosBearing;
+        _currentCosValues[_currentBearingIterator] = cosBearing;
+        _currentBearingDegree = (Math.toDegrees(Math.atan2(_sinCurrentBearingSum, _cosCurrentBearingSum)) + 360).toNumber() % 360;
+        _currentBearingIterator = (_currentBearingIterator + 1) % CURRENT_BEARING_INTERVAL;
+
+        // moving avg bearing for average bearing
+        //
+  
+        _sinAverageBearingSum = _sinAverageBearingSum - _averageSinValues[_averageBearingIterator] + sinOldestCurrentBearing;
+        _averageSinValues[_averageBearingIterator] = sinOldestCurrentBearing;
+        _cosAverageBearingSum = _cosAverageBearingSum - _averageCosValues[_averageBearingIterator] + cosOldestCurrentBearing;
+        _averageCosValues[_averageBearingIterator] = cosOldestCurrentBearing;
+        _averageBearingDegree = (Math.toDegrees(Math.atan2(_sinAverageBearingSum, _cosAverageBearingSum)) + 360).toNumber() % 360;
+        _averageBearingIterator = (_averageBearingIterator + 1) % AVG_BEARING_INTERVAL;
+
 
         var timelapsSecond = timelaps.toDouble() / 1000;
         _distance += positionInfo.speed * timelapsSecond;
@@ -140,7 +192,8 @@ class GpsWrapper
         gpsInfo.MaxSpeedKnot = _maxSpeedKnot;
         gpsInfo.IsRecording = _activeSession.isRecording();
         gpsInfo.LapCount = _lapCount;
-        gpsInfo.AvgBearingDegree = _avgBearingDegree;
+        gpsInfo.CurrentBearingDegree = _currentBearingDegree;
+        gpsInfo.AvgBearingDegree = _averageBearingDegree;
         gpsInfo.TotalDistance = _distance / METERS_PER_NAUTICAL_MILE;
         gpsInfo.GpsLocation = _location; 
 

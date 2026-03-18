@@ -29,23 +29,56 @@ class CruiseView240Dc
         dc.drawText(dc.getWidth() / 2, 7, Gfx.FONT_MEDIUM, timeString, Gfx.TEXT_JUSTIFY_CENTER);
 	}
 	
-    function PrintSpeed(dc, speed)
+    // function PrintSpeed(dc, speed)
+    // {
+    // 	var y =  _height / 2 - dc.getFontHeight(Gfx.FONT_NUMBER_HOT) / 2 - dc.getFontHeight(Gfx.FONT_MEDIUM) / 4 - 2;
+    
+    //     var speedString = speed.format("%2.1f");
+    // 	dc.setColor(Settings.ForegroundColor, Settings.BackgroundColor);
+    //     dc.drawText(_width / 4, y, Gfx.FONT_NUMBER_HOT, speedString, Gfx.TEXT_JUSTIFY_CENTER);
+        
+    //     dc.setColor(Settings.DimColor, Settings.BackgroundColor);
+        	        
+    //     dc.drawText(
+    //     	_width / 2 - 4, 
+    //     	_height - _height / 3.5 - dc.getFontHeight(Gfx.FONT_TINY), 
+    //     	(dc.getFontHeight(Gfx.FONT_NUMBER_HOT) == 52) ? Gfx.FONT_XTINY : Gfx.FONT_TINY, "SOG", Gfx.TEXT_JUSTIFY_RIGHT);
+    // }
+    
+    // function PrintBearing(dc, bearing)
+    // {
+    // 	var y =  _height / 2 - dc.getFontHeight(Gfx.FONT_NUMBER_HOT) / 2 - dc.getFontHeight(Gfx.FONT_MEDIUM) / 4 - 2;
+    //     var bearingString = bearing.format("%003d");
+    // 	dc.setColor(Settings.ForegroundColor, Settings.BackgroundColor);
+    //     dc.drawText(
+    //     	_width / 2 + _width / 4, 
+    //     	y, Gfx.FONT_NUMBER_HOT, bearingString, Gfx.TEXT_JUSTIFY_CENTER);
+        	
+    //     dc.setColor(Settings.DimColor, Settings.BackgroundColor);	
+    //     dc.drawText(
+    //     	_width - 16, 
+    //     	_height - _height / 3.5 - dc.getFontHeight(Gfx.FONT_TINY), 
+    //     	(dc.getFontHeight(Gfx.FONT_NUMBER_HOT) == 52) ? Gfx.FONT_XTINY : Gfx.FONT_TINY, "COG", Gfx.TEXT_JUSTIFY_RIGHT);    
+    // }
+
+    function PrintAverageBearing(dc, averageBearing)
     {
     	var y =  _height / 2 - dc.getFontHeight(Gfx.FONT_NUMBER_HOT) / 2 - dc.getFontHeight(Gfx.FONT_MEDIUM) / 4 - 2;
     
-        var speedString = speed.format("%2.1f");
+        // var bearingString = averageBearing.format("%2.1f");
+        var bearingString = averageBearing.format("%003d");
     	dc.setColor(Settings.ForegroundColor, Settings.BackgroundColor);
-        dc.drawText(_width / 4, y, Gfx.FONT_NUMBER_HOT, speedString, Gfx.TEXT_JUSTIFY_CENTER);
+        dc.drawText(_width / 4, y, Gfx.FONT_NUMBER_HOT, bearingString, Gfx.TEXT_JUSTIFY_CENTER);
         
         dc.setColor(Settings.DimColor, Settings.BackgroundColor);
         	        
-        dc.drawText(
-        	_width / 2 - 4, 
-        	_height - _height / 3.5 - dc.getFontHeight(Gfx.FONT_TINY), 
-        	(dc.getFontHeight(Gfx.FONT_NUMBER_HOT) == 52) ? Gfx.FONT_XTINY : Gfx.FONT_TINY, "SOG", Gfx.TEXT_JUSTIFY_RIGHT);
+        // dc.drawText(
+        	// _width / 2 - 4, 
+        	// _height - _height / 3.5 - dc.getFontHeight(Gfx.FONT_TINY), 
+        	// (dc.getFontHeight(Gfx.FONT_NUMBER_HOT) == 52) ? Gfx.FONT_XTINY : Gfx.FONT_TINY, "AVG COG", Gfx.TEXT_JUSTIFY_RIGHT);
     }
-    
-    function PrintBearing(dc, bearing)
+
+    function PrintCurrentBearing(dc, bearing)
     {
     	var y =  _height / 2 - dc.getFontHeight(Gfx.FONT_NUMBER_HOT) / 2 - dc.getFontHeight(Gfx.FONT_MEDIUM) / 4 - 2;
         var bearingString = bearing.format("%003d");
@@ -55,11 +88,35 @@ class CruiseView240Dc
         	y, Gfx.FONT_NUMBER_HOT, bearingString, Gfx.TEXT_JUSTIFY_CENTER);
         	
         dc.setColor(Settings.DimColor, Settings.BackgroundColor);	
-        dc.drawText(
-        	_width - 16, 
-        	_height - _height / 3.5 - dc.getFontHeight(Gfx.FONT_TINY), 
-        	(dc.getFontHeight(Gfx.FONT_NUMBER_HOT) == 52) ? Gfx.FONT_XTINY : Gfx.FONT_TINY, "COG", Gfx.TEXT_JUSTIFY_RIGHT);    
+        // dc.drawText(
+        // 	_width - 16, 
+        // 	_height - _height / 3.5 - dc.getFontHeight(Gfx.FONT_TINY), 
+        // 	(dc.getFontHeight(Gfx.FONT_NUMBER_HOT) == 52) ? Gfx.FONT_XTINY : Gfx.FONT_TINY, "COG", Gfx.TEXT_JUSTIFY_RIGHT);    
     }
+
+    function PrintBearingDifference(dc, bearing)
+    {
+    	var y =  _height / 2 - dc.getFontHeight(Gfx.FONT_NUMBER_HOT) / 2 - dc.getFontHeight(Gfx.FONT_MEDIUM) / 4 - 2;
+        var bearingString = "";
+        if (bearing > 0) {
+            bearingString = "+";
+        }
+        bearingString += bearing.toString(); //.format("%003d");
+    	dc.setColor(Settings.ForegroundColor, Settings.BackgroundColor);
+        // dc.drawText(
+        // 	_width / 2 + _width / 4, 
+        // 	y, Gfx.FONT_NUMBER_HOT, bearingString, Gfx.TEXT_JUSTIFY_CENTER);
+
+        // dc.drawText(dc.getWidth() / 2, _height - _height * 0.4 + (_height - _height * 0.4 - dc.getFontHeight(Gfx.FONT_NUMBER_HOT))/2, Gfx.FONT_NUMBER_HOT, bearingString, Gfx.TEXT_JUSTIFY_CENTER);
+
+        dc.drawText(dc.getWidth() / 2, 150, Gfx.FONT_NUMBER_HOT, bearingString, Gfx.TEXT_JUSTIFY_CENTER);
+
+        dc.setColor(Settings.DimColor, Settings.BackgroundColor);	
+
+
+          
+    }
+
     
     function PrintMaxSpeed(dc, maxSpeed)
     {
@@ -111,9 +168,12 @@ class CruiseView240Dc
     {
     	dc.setColor(Settings.ForegroundColor, Settings.BackgroundColor);
     	var margin = (_height / 3.5).toNumber();
+        var bottomMargin = (_height * 0.4).toNumber();
         dc.drawLine(0, margin, _width, margin);
-		dc.drawLine(0, _height - margin, _width, _height - margin);
-		dc.drawLine(_width / 2, margin, _width / 2, _height - margin);
+		// dc.drawLine(0, _height - margin, _width, _height - margin);
+		// dc.drawLine(_width / 2, margin, _width / 2, _height - margin);
+        dc.drawLine(0, _height - bottomMargin, _width, _height - bottomMargin);
+		dc.drawLine(_width / 2, margin, _width / 2, _height - bottomMargin);
     }
     
     function DisplayState(dc, gpsStatus, recordingStatus, lapCount)

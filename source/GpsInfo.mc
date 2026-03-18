@@ -30,7 +30,11 @@ class GpsInfo
 	//
 	var IsRecording = false;
 
-	// sliding avg bearing for 20 sec.
+	// sliding avg bearing for e.g. 5 sec.
+	//
+	var CurrentBearingDegree = 0;
+
+	// sliding avg bearing for 30 sec.
 	//
 	var AvgBearingDegree = 0;
 	

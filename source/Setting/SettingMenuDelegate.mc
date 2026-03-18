@@ -43,6 +43,24 @@ class SettingMenuDelegate extends Ui.MenuInputDelegate
             afterTimerMenu.addItem((Settings.TimerSuccessor == Settings.Route ? "*" : "") + " Run Route", :setRoute);
             Ui.pushView(afterTimerMenu, new AfterTimerMenuDelegate(), Ui.SLIDE_LEFT);
         }
+
+        else if (item == :shiftAlerts)
+        {
+            var shiftAlertsMenu = new Ui.Menu();
+            shiftAlertsMenu.setTitle("Shift Alerts");
+            shiftAlertsMenu.addItem((Settings.ShiftAlerts ? "*" : "") + " On", :shiftAlertsOn);
+            shiftAlertsMenu.addItem((Settings.ShiftAlerts ? "" : "*") + " Off", :shiftAlertsOff);
+            Ui.pushView(shiftAlertsMenu, new ShiftAlertsMenuDelegate(), Ui.SLIDE_LEFT);
+        }
+
+        else if (item == :shiftAlertsAvg)
+        {
+            var shiftAlertsAvgMenu = new Ui.Menu();
+            shiftAlertsAvgMenu.setTitle("Shift Alerts Average");
+            shiftAlertsAvgMenu.addItem((Settings.ShiftAlertsAvg == Settings.TenSeconds ? "*" : "") + " 10 Seconds", :setTenSeconds);
+            shiftAlertsAvgMenu.addItem((Settings.ShiftAlertsAvg == Settings.Continuous ? "*" : "") + " Continuous", :setContinuous);
+            Ui.pushView(shiftAlertsAvgMenu, new ShiftAlertsAvgMenuDelegate(), Ui.SLIDE_LEFT);
+        }
     }
 }
 
@@ -102,6 +120,46 @@ class AfterTimerMenuDelegate extends Ui.MenuInputDelegate
         else if (item == :setRoute)
         {
             Settings.TimerSuccessor = Settings.Route;
+        }
+    }
+}
+
+class ShiftAlertsMenuDelegate extends Ui.MenuInputDelegate 
+{
+    function initialize() 
+    {
+        MenuInputDelegate.initialize();
+    }
+    
+    function onMenuItem(item) 
+    {
+        if (item == :shiftAlertsOn)
+        {
+            Settings.SetShiftAlerts(true);
+        }
+        else if (item == :shiftAlertsOff)
+        {
+            Settings.SetShiftAlerts(false);
+        }
+    }
+}
+
+class ShiftAlertsAvgMenuDelegate extends Ui.MenuInputDelegate
+{
+    function initialize() 
+    {
+        MenuInputDelegate.initialize();
+    }
+    
+    function onMenuItem(item) 
+    {
+        if (item == :setTenSeconds)
+        {
+            Settings.ShiftAlertsAvg = Settings.TenSeconds;
+        }
+        else if (item == :setContinuous)
+        {
+            Settings.ShiftAlertsAvg = Settings.Continuous;
         }
     }
 }

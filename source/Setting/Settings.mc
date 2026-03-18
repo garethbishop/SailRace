@@ -10,6 +10,10 @@ class Settings
 		Cruise,
 		Route
 	}
+	enum {
+		TenSeconds,
+		Continuous
+	}
 	static var ForegroundColor = Gfx.COLOR_BLACK;
 	static var BackgroundColor = Gfx.COLOR_WHITE;
 	static var DimColor = Gfx.COLOR_LT_GRAY;
@@ -17,6 +21,10 @@ class Settings
 	static var IsTimerValueUpdated = false;
 	static var IsAutoRecording = false;
 	static var IsWhiteBackground = true; 
+
+	static var ShiftAlerts = true;
+	static var AlertsThreshold = 10;
+	static var ShiftAlertsAvg = TenSeconds;
 	
 	static var RouteApiUrl = "";
 	static var UserId = "";
@@ -36,6 +44,10 @@ class Settings
 		CurrentRoute = App.getApp().getProperty("CurrentRoute2");
 		RouteApiUrl = Toybox.WatchUi.loadResource(Rez.Strings.apiUrl);
 		LoadRoutesLimit = App.getApp().getProperty("loadLimit");
+
+		SetShiftAlerts(App.getApp().getProperty("shiftAlerts"));
+		// SetAlertsThreshold(App.getApp().getProperty("alertsThreshold"));
+		SetShiftAlertsAvg(App.getApp().getProperty("shiftAlertsAvg"));
 	}
 
 	static function SaveSettings()
@@ -44,6 +56,10 @@ class Settings
 		App.getApp().setProperty("timerValue", TimerValue);
 		App.getApp().setProperty("IsAutoRecording", IsAutoRecording);
 		App.getApp().setProperty("CurrentRoute", CurrentRoute);
+
+		App.getApp().setProperty("shiftAlerts", ShiftAlerts);
+		// App.getApp().setProperty("alertsThreshold", CurrentRoute);
+		App.getApp().setProperty("shiftAlertsAvg", ShiftAlertsAvg);
 	}
 
 	static function SetBackground(isWhiteBackground)
@@ -69,5 +85,20 @@ class Settings
 	static function SetAutoRecording(isAutoRecording)
 	{
 		IsAutoRecording = (isAutoRecording == null) ? true : isAutoRecording;
+	}
+
+	static function SetShiftAlerts(value)
+	{
+		ShiftAlerts = (value == null) ? true : value;
+	}
+
+	static function SetAlertsThreshold(value)
+	{
+		AlertsThreshold = (value == null) ? 10 : value;
+	}
+
+	static function SetShiftAlertsAvg(value)
+	{
+		ShiftAlertsAvg = (value == null) ? TenSeconds : value;
 	}
 }

@@ -2,11 +2,6 @@ using Toybox.Attention as Attention;
 using Toybox.System as Sys;
 using Toybox.System;
 
-// using Toybox.Timer;
-// using Toybox.Lang;
-
-
-
 // methods for signals
 //
 class SignalWrapper
@@ -20,7 +15,61 @@ class SignalWrapper
         new Attention.VibeProfile(  30, 200 ),
         new Attention.VibeProfile(  100, 400 )];
 
+	hidden static var _singleBeep = [
+		new Attention.ToneProfile(3000, 250)	
+	];
 
+	hidden static var _doubleBeep = [
+		new Attention.ToneProfile(3000, 230), // Lower pitch for a "heavier" sound
+		new Attention.ToneProfile(0, 100),    // Gap
+		new Attention.ToneProfile(3000, 250) 
+	];
+
+	hidden static var _tripleBeep = [
+    new Attention.ToneProfile(3000, 190), // Lower pitch for a "heavier" sound
+    new Attention.ToneProfile(0, 90),    // Gap
+    new Attention.ToneProfile(3000, 190) , // Second beep
+	new Attention.ToneProfile(0, 90),    // Gap
+    new Attention.ToneProfile(3000, 190)  // Second beep
+	];
+
+	hidden static var _longBeep = [
+		new Attention.ToneProfile(3000, 1500)	
+	];
+
+	hidden static var _canaryTone = [
+    new Attention.ToneProfile(3000, 20), // Short high pitch
+    new Attention.ToneProfile(4000, 30),    // Higher pitch
+    new Attention.ToneProfile(3000, 20), // Return to first pitch
+	new Attention.ToneProfile(4000, 30),    // Higher pitch
+    new Attention.ToneProfile(3000, 20), // Return to first pitch
+	new Attention.ToneProfile(4000, 30),    // Higher pitch
+    new Attention.ToneProfile(3000, 20), // Return to first pitch
+	new Attention.ToneProfile(4000, 30),    // Higher pitch
+    new Attention.ToneProfile(3000, 20), // Return to first pitch
+	];
+
+	hidden static var _doubleCanaryTone = [
+    new Attention.ToneProfile(3000, 20), // Short high pitch
+    new Attention.ToneProfile(4000, 30),    // Higher pitch
+    new Attention.ToneProfile(3000, 20), // Return to first pitch
+	new Attention.ToneProfile(4000, 30),    // Higher pitch
+    new Attention.ToneProfile(3000, 20), // Return to first pitch
+	new Attention.ToneProfile(4000, 30),    // Higher pitch
+    new Attention.ToneProfile(3000, 20), // Return to first pitch
+	new Attention.ToneProfile(4000, 30),    // Higher pitch
+    new Attention.ToneProfile(3000, 20), // Return to first pitch
+	new Attention.ToneProfile(0, 100),    // Gap
+	new Attention.ToneProfile(3000, 20), // Short high pitch
+    new Attention.ToneProfile(4000, 30),    // Higher pitch
+    new Attention.ToneProfile(3000, 20), // Return to first pitch
+	new Attention.ToneProfile(4000, 30),    // Higher pitch
+    new Attention.ToneProfile(3000, 20), // Return to first pitch
+	new Attention.ToneProfile(4000, 30),    // Higher pitch
+    new Attention.ToneProfile(3000, 20), // Return to first pitch
+	new Attention.ToneProfile(4000, 30),    // Higher pitch
+    new Attention.ToneProfile(3000, 20), // Return to first pitch
+	];
 
 	hidden static function _play(tone) 
 	{
@@ -40,14 +89,48 @@ class SignalWrapper
 	
 	static function PressButton()
 	{
-    	_play(0);
+    	// _play(0);
+		Attention.playTone({:toneProfile=>_singleBeep});
 	}
 	
 	static function HalfMinute()
 	{
 		Attention.vibrate(_vibeBeep);
-    	_play(0);
+    	// _play(0);
+		Attention.playTone({:toneProfile=>_singleBeep});
 	}
+
+	static function SingleBeep()
+	{
+		Attention.vibrate(_vibeBeep);
+    	// _play(0);
+		Attention.playTone({:toneProfile=>_singleBeep});
+	}
+
+	static function BeepOnly()
+	{
+    	// _play(0);
+		Attention.playTone({:toneProfile=>_singleBeep});
+	}
+
+	static function DoubleBeep()
+	{
+		Attention.vibrate(_vibeBeep);
+    	Attention.playTone({:toneProfile=>_doubleBeep});
+	}
+
+	static function TripleBeep()
+	{
+		Attention.vibrate(_vibeBeep);
+    	Attention.playTone({:toneProfile=>_tripleBeep});
+	}
+
+	static function LongBeep()
+	{
+		Attention.vibrate(_vibeBeep);
+    	Attention.playTone({:toneProfile=>_longBeep});
+	}
+
 	
 	static function TenSeconds(secLeft)
 	{
@@ -79,6 +162,18 @@ class SignalWrapper
     	_play(2);
     	Attention.vibrate(_vibeBeep);
 	}
+
+	static function CanaryTone()
+	{
+		Attention.vibrate(_vibeBeep);
+		Attention.playTone({:toneProfile=>_canaryTone});
+	}
+
+	static function DoubleCanaryTone()
+	{
+		Attention.vibrate(_vibeBeep);
+		Attention.playTone({:toneProfile=>_doubleCanaryTone});
+	}
 	
 	static function BacklightOn()
 	{
@@ -97,42 +192,5 @@ class SignalWrapper
 			_isBacklightOn = false;
 		}
 	}
-
-
-
-// static function twoBeepsAsync() as Void
-// {
-// 	_play(0);
-
-//     var t = new Timer.Timer();
-//     t.start(Lang.method(SignalWrapper.secondBeep), 150, false);
-// }
-
-// static function secondBeep() as Void
-// {
-// _play(0);
-// }
-
-
-// static function onTimerTimeout() as Void {
-//         // System.println("Timer callback executed!");
-//         _play(0);
-
-// 		stopTimer();
-//     }
-
-//     static function startIntervalTimer() as Void {
-// 		_play(0);
-//         myTimer = new Timer.Timer();
-//         // Start the timer to call the static onTimerTimeout function every 1000ms (1 second), repeatedly
-//         myTimer.start(method(:onTimerTimeout), 1000, true);
-//     }
-
-// 	    static function stopTimer() as Void {
-//         if (myTimer != null) {
-//             myTimer.stop();
-//             myTimer = null;
-//         }
-//     }
 
 }

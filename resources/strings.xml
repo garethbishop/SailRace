@@ -7,6 +7,8 @@
     <string id="isWhiteBackgroundTitle">White Background</string>
     <string id="wpEpsilonTitle">Pass Waypoint Radius (m)</string>
     <string id="loadLimitTitle">Routes load limit</string>
+    <string id="shiftAlertsTitle">Shift Alerts</string>
+    <!-- <string id="shiftAlertsAvgTitle">Shift Alerts Average</string> -->
     
     <string id="mmenuRacetimer">Race Timer</string>
     <string id="mmenuCruise">Cruise</string>
@@ -16,4 +18,6 @@
     <string id="mmenuSetting">Settings</string>
     <string id="mmenuExitDiscard">Exit Discard Track</string>
     <string id="mmenuExitSave">Exit Save Track</string>
+
+    
 </strings>

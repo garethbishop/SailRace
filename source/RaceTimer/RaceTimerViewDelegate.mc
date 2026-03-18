@@ -36,7 +36,7 @@ class RaceTimerViewDelegate extends Ui.BehaviorDelegate
     
     function onBack()
     {
-    	_raceTimerView.DownToMinute();
+    	_raceTimerView.SyncToMinute();
     	return true;
     }
 }

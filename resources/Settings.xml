@@ -27,5 +27,14 @@
     <setting propertyKey="@Properties.isWhiteBackground" title="@Strings.isWhiteBackgroundTitle">
         <settingConfig type="boolean" />
     </setting>
+
+    <setting propertyKey="@Properties.shiftAlerts" title="@Strings.shiftAlertsTitle">
+        <settingConfig type="boolean" />
+    </setting>
+
+    <!-- <setting propertyKey="@Properties.shiftAlertsAvg" title="@Strings.shiftAlertsAvgTitle">
+        <settingConfig type="numeric" />
+    </setting> -->
+
 	
 </settings>

@@ -56,7 +56,7 @@ class RaceTimerView extends Ui.View
         	if (_timerValue <= 0)
         	{
                 stopTimer();
-        		SignalWrapper.Start();
+                SignalWrapper.LongBeep();
         		_gpsWrapper.AddLap();
                 if (Settings.TimerSuccessor == Settings.Cruise)
                 {
@@ -69,20 +69,28 @@ class RaceTimerView extends Ui.View
         		return;
         	}
         	
-        	if (_timerValue.toLong() % 30 == 0)
+            if ((_timerValue == 90) || (_timerValue == 150) || (_timerValue == 210) || (_timerValue == 270))
         	{
-        		SignalWrapper.HalfMinute();
+                SignalWrapper.BeepOnly();
+        	}
+
+            if (_timerValue.toLong() % 60 == 0)
+        	{
+        		SignalWrapper.DoubleBeep();
         	}
         	
-            // if (_timerValue < 11)
-            // {
-            //     SignalWrapper.TenSeconds(_timerValue.toLong());
-            // }
-
-        	if ((_timerValue < 246 && _timerValue > 239) || (_timerValue < 66 && _timerValue > 59) || (_timerValue == 50) || (_timerValue == 40) || (_timerValue == 20) || ( _timerValue < 16))
+        	if ((_timerValue < 246 && _timerValue > 240) || (_timerValue < 66 && _timerValue > 60) || (_timerValue == 50) || (_timerValue == 40) || (_timerValue == 30) || (_timerValue == 20) || ( _timerValue < 16 && _timerValue > 10))
         	{
-        		SignalWrapper.CountdownAlert(_timerValue.toLong());
+                SignalWrapper.SingleBeep();
         	}
+
+            if (_timerValue > 5 && _timerValue < 11) {
+                SignalWrapper.DoubleBeep();
+            }
+
+            if (_timerValue > 0 && _timerValue < 6) {
+                SignalWrapper.TripleBeep();
+            }
         }
         
         Ui.requestUpdate();
@@ -133,9 +141,10 @@ class RaceTimerView extends Ui.View
     	Ui.requestUpdate();
     }
     
-    function DownToMinute()
+    function SyncToMinute()
     {
     	_timerValue = _timerValue.toLong() / 60 * 60;
     	Ui.requestUpdate();
+        SignalWrapper.DoubleBeep();
     }
 }

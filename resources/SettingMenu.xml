@@ -3,4 +3,6 @@
     	<menu-item id="backgroundColor" label="Background Color"/>
     	<menu-item id="isAutoStartRecording" label="Auto Recording"/>
 		<menu-item id="afterTimer" label="RaceTimer Launcher"/>
+		<menu-item id="shiftAlerts" label="Shift Alerts"/>
+		<menu-item id="shiftAlertsAvg" label="Shift Alerts Average"/>
 </menu>

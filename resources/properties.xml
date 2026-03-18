@@ -5,5 +5,7 @@
     <property id="IsAutoRecording" type="boolean">true</property>
     <property id="userId" type = "string"></property>
     <property id="wpEpsilon" type="number">100</property>
-    <property id="loadLimit" type="number">10</property> 
+    <property id="loadLimit" type="number">10</property>
+    <property id="shiftAlerts" type="boolean">true</property>
+    <!-- <property id="shiftAlertsAvg" type="number">1</property> -->
 </properties>
