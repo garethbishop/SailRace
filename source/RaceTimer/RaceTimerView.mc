@@ -37,6 +37,8 @@ class RaceTimerView extends Ui.View
                 _timerValue = Settings.GetTimerValue();
             }
         }
+
+        _gpsWrapper.IsSessionRecorded = false;
     }
 
     function stopTimer()
@@ -79,7 +81,8 @@ class RaceTimerView extends Ui.View
         		SignalWrapper.DoubleBeep();
         	}
         	
-        	if ((_timerValue < 246 && _timerValue > 240) || (_timerValue < 66 && _timerValue > 60) || (_timerValue == 50) || (_timerValue == 40) || (_timerValue == 30) || (_timerValue == 20) || ( _timerValue < 16 && _timerValue > 10))
+            // If timer has been set to 3 minutes, do 5 sec countdown before 2 minutes
+        	if ((_timerValue < 246 && _timerValue > 240) || (Settings.TimerValue == 180 && _timerValue < 126 && _timerValue > 120) || (_timerValue < 66 && _timerValue > 60) || (_timerValue == 50) || (_timerValue == 40) || (_timerValue == 30) || (_timerValue == 20) || ( _timerValue < 16 && _timerValue > 10))
         	{
                 SignalWrapper.SingleBeep();
         	}
@@ -125,6 +128,7 @@ class RaceTimerView extends Ui.View
     	{
     		_timer.stop();
     		_timer.start(method(:onTimerUpdate), 1000, true);
+            _gpsWrapper.IsSessionRecorded = true;
     		Ui.requestUpdate();
     	}
     }

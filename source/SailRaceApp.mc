@@ -9,6 +9,7 @@ class SailRaceApp extends App.AppBase
     hidden var _gpsWrapper;
 	hidden var _cruiseView;
 	hidden var _raceTimerView;
+	hidden var _recordView;
 	hidden var _waypointView;
 	hidden var _lapView;
 	hidden var _selectRouteView;
@@ -98,6 +99,7 @@ class SailRaceApp extends App.AppBase
 		_cruiseView = new CruiseView(_gpsWrapper, new CruiseView240Dc());
 	    _waypointView = new WaypointView(_gpsWrapper, new WaypointView240Dc(), _cruiseView);
 	    _raceTimerView = new RaceTimerView(_gpsWrapper, _cruiseView, _waypointView, new RaceTimerView240Dc());
+		_recordView = new RecordView(_gpsWrapper, new RecordView240Dc());
     	_lapView = new LapView(new LapView240Dc(), _gpsWrapper);
     	_selectRouteView = new SelectRouteView(new SelectRouteView240Dc());
     	_routeCustomMenuView = new RouteCustomMenuView(_gpsWrapper, new RouteCustomMenuView240Dc(), _waypointView, _selectRouteView); 
@@ -201,7 +203,7 @@ class SailRaceApp extends App.AppBase
     			
         return [ 
         	new StartupView(_mainMenu, 
-        	new MainMenuDelegate(_cruiseView, _raceTimerView, _lapView, _waypointView, _selectRouteView, _routeCustomMenuView, _gpsWrapper)) 
+        	new MainMenuDelegate(_cruiseView, _raceTimerView, _recordView, _lapView, _waypointView, _selectRouteView, _routeCustomMenuView, _gpsWrapper)) 
 		];
     }
     

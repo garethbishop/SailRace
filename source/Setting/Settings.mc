@@ -12,7 +12,8 @@ class Settings
 	}
 	enum {
 		TenSeconds,
-		Continuous
+		Continuous,
+		Recorded
 	}
 	static var ForegroundColor = Gfx.COLOR_BLACK;
 	static var BackgroundColor = Gfx.COLOR_WHITE;
@@ -23,8 +24,11 @@ class Settings
 	static var IsWhiteBackground = true; 
 
 	static var ShiftAlerts = true;
-	static var AlertsThreshold = 10;
 	static var ShiftAlertsAvg = TenSeconds;
+	static var PortHeadingAverage = 0;
+	static var StarboardHeadingAverage = 0;
+	static var AverageWindDirection = 0;
+	static var ShiftAlertsThreshold = 7;
 	
 	static var RouteApiUrl = "";
 	static var UserId = "";
@@ -46,8 +50,12 @@ class Settings
 		LoadRoutesLimit = App.getApp().getProperty("loadLimit");
 
 		SetShiftAlerts(App.getApp().getProperty("shiftAlerts"));
-		// SetAlertsThreshold(App.getApp().getProperty("alertsThreshold"));
 		SetShiftAlertsAvg(App.getApp().getProperty("shiftAlertsAvg"));
+		SetAlertsThreshold(App.getApp().getProperty("shiftAlertsThreshold"));
+
+		SetPortHeadingAvg(App.getApp().getProperty("portHeadingAvg"));
+		SetStarboardHeadingAvg(App.getApp().getProperty("starboardHeadingAvg"));
+		SetAverageWindDirection(App.getApp().getProperty("averageWindDirection"));
 	}
 
 	static function SaveSettings()
@@ -58,8 +66,12 @@ class Settings
 		App.getApp().setProperty("CurrentRoute", CurrentRoute);
 
 		App.getApp().setProperty("shiftAlerts", ShiftAlerts);
-		// App.getApp().setProperty("alertsThreshold", CurrentRoute);
 		App.getApp().setProperty("shiftAlertsAvg", ShiftAlertsAvg);
+		App.getApp().setProperty("shiftAlertsThreshold", ShiftAlertsThreshold);
+
+		App.getApp().setProperty("portHeadingAvg", PortHeadingAverage);
+		App.getApp().setProperty("starboardHeadingAvg", StarboardHeadingAverage);
+		App.getApp().setProperty("averageWindDirection", AverageWindDirection);
 	}
 
 	static function SetBackground(isWhiteBackground)
@@ -92,13 +104,29 @@ class Settings
 		ShiftAlerts = (value == null) ? true : value;
 	}
 
-	static function SetAlertsThreshold(value)
-	{
-		AlertsThreshold = (value == null) ? 10 : value;
-	}
-
 	static function SetShiftAlertsAvg(value)
 	{
 		ShiftAlertsAvg = (value == null) ? TenSeconds : value;
 	}
+
+	static function SetPortHeadingAvg(value)
+	{
+		PortHeadingAverage = (value == null ? 0 : value);
+	}
+
+	static function SetStarboardHeadingAvg(value)
+	{
+		StarboardHeadingAverage = (value == null ? 0 : value);
+	}
+
+	static function SetAlertsThreshold(value)
+	{
+		ShiftAlertsThreshold = (value == null ? 7 : value);
+	}
+
+	static function SetAverageWindDirection(value)
+	{
+		AverageWindDirection = (value == null ? 0 : value);
+	}
+	
 }

@@ -8,4 +8,8 @@
     <property id="loadLimit" type="number">10</property>
     <property id="shiftAlerts" type="boolean">true</property>
     <!-- <property id="shiftAlertsAvg" type="number">1</property> -->
+    <property id="shiftAlertsThreshold" type="number">7</property>
+    <property id="portHeadingAvg" type="number">0</property>
+    <property id="starboardHeadingAvg" type="number">0</property>
+    <property id="averageWindDirection" type="number">0</property>
 </properties>

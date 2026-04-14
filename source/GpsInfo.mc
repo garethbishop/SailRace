@@ -22,6 +22,10 @@ class GpsInfo
 	//
 	var BearingDegree = 0;
 
+	// Heading in radians
+	//
+	var Heading = 0;
+
 	// total number of laps
 	//
 	var LapCount = 0;
@@ -34,9 +38,16 @@ class GpsInfo
 	//
 	var CurrentBearingDegree = 0;
 
+	var SinCurrentBearingSum = 0;
+	var CosCurrentBearingSum = 0;
+
 	// sliding avg bearing for 30 sec.
 	//
-	var AvgBearingDegree = 0;
+	// var AvgBearingDegree = 0;
+
+	var TenSecondAvgBearingDegree = 0;
+
+	var ContinuousAvgBearingDegree = 0;
 	
 	// Total distance covered
 	//

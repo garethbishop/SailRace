@@ -14,7 +14,7 @@ class StartupView extends Ui.View
         View.initialize();
         
         _mainMenuView = mainMenuView;
-		    _mainMenuDelegate = mainMenuDelegate;
+        _mainMenuDelegate = mainMenuDelegate;
     }
 
     // just switch to main menu as soon as shows

@@ -29,20 +29,20 @@ class CruiseViewDelegate extends Ui.BehaviorDelegate
         return true;
     }
     
-    function onBack()
-    {
-        // if lap successfully added, make sound
-        //
-        if (_gpsWrapper.AddLap())
-        {
-            SignalWrapper.PressButton();
-        }
-        return true;
-    }
+    // function onBack()
+    // {
+    //     // if lap successfully added, make sound
+    //     //
+    //     if (_gpsWrapper.AddLap())
+    //     {
+    //         SignalWrapper.PressButton();
+    //     }
+    //     return true;
+    // }
     
-    function onNextPage()
-    {
-    	_cruiseView.SwitchNextMode();
-        return true;
-    }
+    // function onNextPage()
+    // {
+    // 	_cruiseView.SwitchNextMode();
+    //     return true;
+    // }
 }

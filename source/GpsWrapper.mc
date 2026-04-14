@@ -11,6 +11,9 @@ class GpsWrapper
     hidden var _activeSession;
     hidden var _isAutoRecordStart = false;
 
+    // hidden var _isSessionRecorded = true;
+    var IsSessionRecorded = true;
+
     // avg for 10 sec. values (speed)
     //
 	hidden var _avgSpeedIterator = 0;
@@ -50,9 +53,13 @@ class GpsWrapper
     hidden var _averageSinValues = [];
     hidden var _averageCosValues = [];
 
+    hidden var _continuousSinTotal = 0;
+    hidden var _continuousCosTotal = 0;
+
     hidden var _sinAverageBearingSum = 0;
     hidden var _cosAverageBearingSum = 0;
-    hidden var _averageBearingDegree = 0;
+    hidden var _tenSecondAverageBearingDegree = 0;
+    hidden var _continuousAverageBearingDegree = 0;
     hidden var _averageBearingIterator = 0;
 
     // actual gps values
@@ -60,6 +67,7 @@ class GpsWrapper
 	hidden var _speedKnot = 0.0;
     hidden var _accuracy = 0;
     hidden var _bearingDegree = 0;
+    hidden var _heading = 0;
     hidden var _location = null;
 
     // global values
@@ -115,11 +123,16 @@ class GpsWrapper
             return;
         }
 
+        _heading = (positionInfo.heading != null) ? positionInfo.heading : 0;
+
         // autostart recording 
         //
-        if (!_isAutoRecordStart && Settings.IsAutoRecording)
+        if (IsSessionRecorded)
         {
-        	_isAutoRecordStart = StartStopRecording();
+            if (!_isAutoRecordStart && Settings.IsAutoRecording)
+            {
+                _isAutoRecordStart = StartStopRecording();
+            }
         }
 
         // difference between two method's calls 
@@ -151,26 +164,33 @@ class GpsWrapper
         var sinBearing = Math.sin(positionInfo.heading);
         var cosBearing = Math.cos(positionInfo.heading);
 
+        // Record oldest current bearing sin/cos values before getting overwritten
         var  sinOldestCurrentBearing = _currentSinValues[_currentBearingIterator];
         var cosOldestCurrentBearing = _currentCosValues[_currentBearingIterator];
 
 
+        // Sum up sin/cos values for last 10 seconds with new values replacing oldest
         _sinCurrentBearingSum = _sinCurrentBearingSum - sinOldestCurrentBearing + sinBearing;
         _currentSinValues[_currentBearingIterator] = sinBearing;
         _cosCurrentBearingSum = _cosCurrentBearingSum - cosOldestCurrentBearing + cosBearing;
         _currentCosValues[_currentBearingIterator] = cosBearing;
+        // Use inverse tan to get angle from sin/cos sums
         _currentBearingDegree = (Math.toDegrees(Math.atan2(_sinCurrentBearingSum, _cosCurrentBearingSum)) + 360).toNumber() % 360;
         _currentBearingIterator = (_currentBearingIterator + 1) % CURRENT_BEARING_INTERVAL;
 
-        // moving avg bearing for average bearing
-        //
-  
+        // Sum up sin/cos values for previous 10 seconds with oldest 'current' value replacing oldest 'average' value 
         _sinAverageBearingSum = _sinAverageBearingSum - _averageSinValues[_averageBearingIterator] + sinOldestCurrentBearing;
         _averageSinValues[_averageBearingIterator] = sinOldestCurrentBearing;
         _cosAverageBearingSum = _cosAverageBearingSum - _averageCosValues[_averageBearingIterator] + cosOldestCurrentBearing;
         _averageCosValues[_averageBearingIterator] = cosOldestCurrentBearing;
-        _averageBearingDegree = (Math.toDegrees(Math.atan2(_sinAverageBearingSum, _cosAverageBearingSum)) + 360).toNumber() % 360;
+        // Use inverse tan to get angles from sin/cos sums
+        _tenSecondAverageBearingDegree = (Math.toDegrees(Math.atan2(_sinAverageBearingSum, _cosAverageBearingSum)) + 360).toNumber() % 360;
         _averageBearingIterator = (_averageBearingIterator + 1) % AVG_BEARING_INTERVAL;
+
+        _continuousSinTotal += sinOldestCurrentBearing;
+        _continuousCosTotal += cosOldestCurrentBearing;
+
+        _continuousAverageBearingDegree = (Math.toDegrees(Math.atan2(_continuousSinTotal, _continuousCosTotal)) + 360).toNumber() % 360;
 
 
         var timelapsSecond = timelaps.toDouble() / 1000;
@@ -186,6 +206,7 @@ class GpsWrapper
     {
         var gpsInfo = new GpsInfo();
         gpsInfo.Accuracy = _accuracy;
+        gpsInfo.Heading = _heading;
         gpsInfo.SpeedKnot = _speedKnot;
         gpsInfo.BearingDegree = _bearingDegree;
         gpsInfo.AvgSpeedKnot = _avgSpeedSum / AVG_SPEED_INTERVAL;
@@ -193,7 +214,10 @@ class GpsWrapper
         gpsInfo.IsRecording = _activeSession.isRecording();
         gpsInfo.LapCount = _lapCount;
         gpsInfo.CurrentBearingDegree = _currentBearingDegree;
-        gpsInfo.AvgBearingDegree = _averageBearingDegree;
+        gpsInfo.SinCurrentBearingSum = _sinCurrentBearingSum;
+        gpsInfo.CosCurrentBearingSum = _cosCurrentBearingSum;
+        gpsInfo.TenSecondAvgBearingDegree = _tenSecondAverageBearingDegree;
+        gpsInfo.ContinuousAvgBearingDegree = _continuousAverageBearingDegree;
         gpsInfo.TotalDistance = _distance / METERS_PER_NAUTICAL_MILE;
         gpsInfo.GpsLocation = _location; 
 
@@ -331,4 +355,9 @@ class GpsWrapper
         lapInfo.LapNumber = _lapCount;   
         return lapInfo;     
     }
+
+    public function resetAverageSinCosTotals() as Void {
+        _continuousSinTotal = _sinCurrentBearingSum;
+        _continuousCosTotal = _cosCurrentBearingSum;
+	}
 }

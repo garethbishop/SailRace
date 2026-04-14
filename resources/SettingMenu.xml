@@ -5,4 +5,6 @@
 		<menu-item id="afterTimer" label="RaceTimer Launcher"/>
 		<menu-item id="shiftAlerts" label="Shift Alerts"/>
 		<menu-item id="shiftAlertsAvg" label="Shift Alerts Average"/>
+		<menu-item id="shiftAlertsThreshold" label="Shift Alerts Threshold"/>
+		<menu-item id="recordedHeadings" label="Recorded Headings"/>
 </menu>

@@ -2,6 +2,7 @@
 	<menu id="MainMenuFull" title="Menu">
 			<menu-item id="raceTimer" label="@Strings.mmenuRacetimer"/>
 			<menu-item id="cruiseView" label="@Strings.mmenuSail"/>
+			<menu-item id="recordView" label="@Strings.mmenuRecord"/>
 			<!-- <menu-item id="routeMenu" label="@Strings.mmenuRoute"/>
 	    	<menu-item id="lapView" label="@Strings.mmenuLapsView"/> -->
 	    	<menu-item id="exitSave" label="@Strings.mmenuExitSave"/>

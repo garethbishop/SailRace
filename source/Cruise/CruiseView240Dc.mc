@@ -12,6 +12,7 @@ class CruiseView240Dc
 	hidden var _gpsColorsArray = [Gfx.COLOR_RED, Gfx.COLOR_RED, Gfx.COLOR_ORANGE, Gfx.COLOR_YELLOW, Gfx.COLOR_GREEN];	
 	hidden var _width;
 	hidden var _height;
+    hidden var _shiftAlertCountdown = 0;
 
 	function ClearDc(dc)
 	{
@@ -113,11 +114,151 @@ class CruiseView240Dc
 
         dc.setColor(Settings.DimColor, Settings.BackgroundColor);	
 
-
-          
     }
 
+    function PrintRecordedData(dc, currentBearing, bearingDifference, tack)
+    {
+        // var y =  _height / 2 - dc.getFontHeight(Gfx.FONT_NUMBER_HOT) / 2 - dc.getFontHeight(Gfx.FONT_MEDIUM) / 4 - 2;
+        var y = 80;
+        var bearingString = " " + currentBearing.format("%003d") + "°";
+    	
+        // dc.setColor(Settings.DimColor, Settings.BackgroundColor);	
+
+        if (bearingDifference > 35 || bearingDifference < -35) {
+
+            bearingDifference = Settings.AverageWindDirection - currentBearing;
+
+            if (bearingDifference > 180) {
+                bearingDifference -= 360;
+            } else if (bearingDifference < -180) {
+                bearingDifference += 360;
+            }
+        }
+
+
+
+        var bearingDifferenceString = "";
+        if (bearingDifference > 0) {
+            bearingDifferenceString = "+";
+        }
+        bearingDifferenceString += bearingDifference.toString() + "°";
+
+        dc.setColor(Settings.ForegroundColor, Settings.BackgroundColor);
+        // dc.drawText(
+            // _width / 2, 
+        	// y, Gfx.FONT_NUMBER_HOT, bearingString, Gfx.TEXT_JUSTIFY_CENTER);
+            dc.drawText(
+            _width / 2, 
+        	y, Gfx.FONT_NUMBER_HOT, bearingDifferenceString, Gfx.TEXT_JUSTIFY_CENTER);
+
+        // dc.drawText(dc.getWidth() / 2, 180, Gfx.FONT_LARGE, bearingDifferenceString, Gfx.TEXT_JUSTIFY_CENTER);
+        dc.drawText(dc.getWidth() / 2, 180, Gfx.FONT_LARGE, bearingString, Gfx.TEXT_JUSTIFY_CENTER);
+
+        var rightTriangle = [
+            [200,110],
+            [200,150],
+            [225,130]
+        ];
+
+        var rightRightTriangle = [
+            [230,110],
+            [230,150],
+            [255,130]
+        ];
+
+        var leftTriangle = [
+            [60,110],
+            [60,150],
+            [35,130]
+        ];
+
+        var leftLeftTriangle = [
+            [30,110],
+            [30,150],
+            [5,130]
+        ];
+        
+        if (tack.equals("starboard"))
+        {
+            if (bearingDifference > 3 && bearingDifference < 35)
+            {
+                // Print lift
+                dc.setColor(Gfx.COLOR_GREEN, Gfx.COLOR_GREEN);
+                dc.fillPolygon(rightTriangle);
+            }
+            else if (bearingDifference < -3 && bearingDifference > -35)
+            {
+                // Print knock
+                dc.setColor(Gfx.COLOR_RED, Gfx.COLOR_RED);
+                dc.fillPolygon(leftTriangle);
+            }
+
+            if (bearingDifference > Settings.ShiftAlertsThreshold && bearingDifference < 35)
+            {
+                // Print lift
+                dc.setColor(Gfx.COLOR_GREEN, Gfx.COLOR_GREEN);
+                dc.fillPolygon(rightRightTriangle);
+                if (Settings.ShiftAlerts && _shiftAlertCountdown == 0) {
+                    SignalWrapper.CanaryTone();
+                _shiftAlertCountdown = 10;
+                }
+            }
+            else if ((bearingDifference < 0-Settings.ShiftAlertsThreshold) && bearingDifference > -35)
+            {
+                // Print knock
+                dc.setColor(Gfx.COLOR_RED, Gfx.COLOR_RED);
+                dc.fillPolygon(leftLeftTriangle);
+                if (Settings.ShiftAlerts && _shiftAlertCountdown == 0) {
+                SignalWrapper.DoubleCanaryTone();
+                _shiftAlertCountdown = 10;
+                }
+            }
+        }
+        else if (tack.equals("port"))
+        {
+            if (bearingDifference < -3 && bearingDifference > -35)
+            {
+                // Print lift
+                dc.setColor(Gfx.COLOR_GREEN, Gfx.COLOR_GREEN);
+                dc.fillPolygon(leftTriangle);
+            }
+            else if (bearingDifference > 3 && bearingDifference < 35)
+            {
+                // Print knock
+                dc.setColor(Gfx.COLOR_RED, Gfx.COLOR_RED);
+                dc.fillPolygon(rightTriangle);
+            }
+
+            if ((bearingDifference < 0-Settings.ShiftAlertsThreshold) && bearingDifference > -35)
+            {
+                // Print lift
+                dc.setColor(Gfx.COLOR_GREEN, Gfx.COLOR_GREEN);
+                dc.fillPolygon(leftLeftTriangle);
+                if (Settings.ShiftAlerts && _shiftAlertCountdown == 0) {
+                    SignalWrapper.CanaryTone();
+                _shiftAlertCountdown = 10;
+                }
+            }
+            else if (bearingDifference > Settings.ShiftAlertsThreshold && bearingDifference < 35)
+            {
+                // Print knock
+                dc.setColor(Gfx.COLOR_RED, Gfx.COLOR_RED);
+                dc.fillPolygon(rightRightTriangle);
+                if (Settings.ShiftAlerts && _shiftAlertCountdown == 0) {
+                SignalWrapper.CanaryTone();
+                _shiftAlertCountdown = 10;
+                }
+            }
+        }
+
+        if (_shiftAlertCountdown > 0) {
+            _shiftAlertCountdown--;
+        }
+
+    }
     
+    //Unused functions
+
     function PrintMaxSpeed(dc, maxSpeed)
     {
         var maxSpeedString = maxSpeed.format("%2.1f");
